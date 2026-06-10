@@ -1,0 +1,120 @@
+import math
+
+def Vektor2Dsum(x1, y1, x2, y2):
+    x = x1 + x2
+    y = y1 + y2
+
+    return(x, y)
+
+
+
+def Vektor2Dminus(x1, y1, x2, y2):
+    x = x1 - x2
+    y = y1 - y2
+
+    return(x, y)
+
+
+def Vektor2Dskalar(x1, y1, s):
+    x = x1 * s
+    y = y1 * s
+
+    return(x, y)
+
+def Vektor2Dlengde(x1, y1):
+    return(math.sqrt(x1**2 + y1**2))
+
+def Vektor2Dvinkel(x1, y1):
+    return (math.degrees(math.atan(y1/x1)))
+
+
+def PolaerKoordinater(x, y):
+    r = math.sqrt(x**2 + y**2)
+    vinkel = math.atan2(y, x)
+
+    return (r, vinkel)
+
+
+def Vektor2Dprikprodukt(x1, y1, x2, y2):
+    return (x1 * x2) + (y1 * y2)
+
+def Vektor2Denhedsvektor(x1, y1):
+
+    enhedsvektorX = x1 / Vektor2Dlengde(x1, y1)
+    enhedsvektorY = y1 / Vektor2Dlengde(x1, y1)
+
+
+
+    return(enhedsvektorX, enhedsvektorY )
+
+
+def Vektorvinkelimellem2D(x1, y1, x2, y2):
+
+    return(math.acos(Vektor2Dprikprodukt(x1, y1, x2, y2) / (Vektor2Dlengde(x1, y1) * Vektor2Dlengde(x2, y2))))
+
+
+
+
+def Vektor3Dsum(x1, y1, z1, x2, y2, z2):
+    x = x1 + x2 
+    y = y1 + y2
+    z = z1 + z2
+
+    return(x, y, z)
+
+
+
+def Vektor3Dminus(x1, y1, z1, x2, y2, z2):
+    x = x1 - x2
+    y = y1 - y2
+    z = z1 - z2
+
+    return(x, y, z)
+
+
+def Vektor3Dskalar(x1, y1, z1, s):
+    x = x1 * s
+    y = y1 * s
+    z = z1 * s
+
+    return(x, y, z)
+
+def Vektor3Dlengde(x1, y1, z1):
+     return(math.sqrt(x1**2 + y1**2 + z1**2))
+
+
+
+def vektor3Dvinkel(x1, y1, z1):
+    return (math.degrees(math.atan(y1, x1)))
+
+
+def Vektor3DpolaerKoordinater(x, y, z):
+    r = math.sqrt(x**2 + y**2 + z**2)
+    vinkel = math.atan2(y, x)
+    phi = math.acos(z / r)
+
+    return (r, vinkel, phi)
+
+
+def Vektor3Dprikprodukt(x1, y1, x2, y2, z1, z2):
+    return (x1 * x2) + (y1 * y2) + (z1 * z2)
+
+    
+
+def Vektor3Denhedsvektor(x1, y1, z1):
+
+    enhedsvektorX = x1 / Vektor3Dlengde(x1, y1, z1)
+    enhedsvektorY = y1 / Vektor3Dlengde(x1, y1, z1)
+    enhedsvektorZ = z1 / Vektor3Dlengde(x1, y1, z1)
+
+
+
+    return(enhedsvektorX, enhedsvektorY, enhedsvektorZ)
+
+
+def Krydsprodukt(x1, y1, z1, x2, y2, z2):
+    krydsproduktX = (y1 * z2) - (z1 * y2)
+    krydsproduktY = (z1 * x2) - (x1 * z2)
+    krydsproduktZ = (x1 * y2) - (y1 * x2)
+
+    return(krydsproduktX, krydsproduktY, krydsproduktZ)
