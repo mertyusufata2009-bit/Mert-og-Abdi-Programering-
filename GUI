@@ -1,0 +1,4 @@
+import tkinter 
+import math
+import FunktionerVektor
+
