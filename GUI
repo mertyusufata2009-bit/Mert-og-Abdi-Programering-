@@ -1,4 +1,465 @@
-import tkinter 
+import tkinter as tk
+from tkinter import ttk
 import math
 import FunktionerVektor
 
+
+Vinduet = tk.Tk()
+
+Vinduet.title("Vektorberegner")
+Vinduet.geometry("1500x1000")
+Vinduet.configure(bg="white")
+
+
+def ryd_vindue():
+    for widget in Vinduet.winfo_children():
+        widget.destroy()
+
+
+# -------------------------
+# 2D FUNKTIONER TIL GUI
+# -------------------------
+
+def ryd_2d_inputs():
+    for widget in input_frame_2d.winfo_children():
+        widget.destroy()
+
+
+def lav_input_2d(tekst, x, y):
+    label = tk.Label(input_frame_2d, text=tekst, font=("Arial", 18), bg="white", fg="black")
+    label.place(x=x, y=y)
+
+    felt = tk.Entry(input_frame_2d, font=("Arial", 18), width=10, bg="lightgray", fg="black", insertbackground="black", relief="solid", bd=2)
+    felt.place(x=x + 80, y=y)
+
+    return felt
+
+
+def opdater_2d_inputs(event):
+    global input_x1, input_y1, input_x2, input_y2, input_s, input_r, input_vinkel
+
+    ryd_2d_inputs()
+
+    valg = dropdown_2d.get()
+
+    input_x1 = None
+    input_y1 = None
+    input_x2 = None
+    input_y2 = None
+    input_s = None
+    input_r = None
+    input_vinkel = None
+
+    if valg in ["Addition", "Subtraktion", "Prikprodukt", "Vinkel mellem 2 vektorer", "Projektion", "Punkt til vektor"]:
+        input_x1 = lav_input_2d("x1:", 0, 0)
+        input_y1 = lav_input_2d("y1:", 250, 0)
+        input_x2 = lav_input_2d("x2:", 0, 80)
+        input_y2 = lav_input_2d("y2:", 250, 80)
+
+    elif valg in ["Længde", "Vinkel", "Enhedsvektor", "Tværvektor", "Kartesisk til polær"]:
+        input_x1 = lav_input_2d("x1:", 0, 0)
+        input_y1 = lav_input_2d("y1:", 250, 0)
+
+    elif valg == "Skalar":
+        input_x1 = lav_input_2d("x1:", 0, 0)
+        input_y1 = lav_input_2d("y1:", 250, 0)
+        input_s = lav_input_2d("s:", 0, 80)
+
+    elif valg == "Polær til kartesisk":
+        input_r = lav_input_2d("r:", 0, 0)
+        input_vinkel = lav_input_2d("vinkel:", 250, 0)
+
+    resultat_label.config(text="Resultat:")
+
+
+def udregn_2d():
+    try:
+        valg = dropdown_2d.get()
+
+        if valg == "Addition":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            x2 = float(input_x2.get())
+            y2 = float(input_y2.get())
+            resultat = FunktionerVektor.Vektor2Dsum(x1, y1, x2, y2)
+
+        elif valg == "Subtraktion":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            x2 = float(input_x2.get())
+            y2 = float(input_y2.get())
+            resultat = FunktionerVektor.Vektor2Dminus(x1, y1, x2, y2)
+
+        elif valg == "Skalar":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            s = float(input_s.get())
+            resultat = FunktionerVektor.Vektor2Dskalar(x1, y1, s)
+
+        elif valg == "Længde":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            resultat = FunktionerVektor.Vektor2Dlængde(x1, y1)
+
+        elif valg == "Vinkel":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            resultat = FunktionerVektor.Vektor2Dvinkel(x1, y1)
+
+        elif valg == "Vinkel mellem 2 vektorer":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            x2 = float(input_x2.get())
+            y2 = float(input_y2.get())
+            resultat = FunktionerVektor.VinkelMellem2D(x1, y1, x2, y2)
+
+        elif valg == "Kartesisk til polær":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            resultat = FunktionerVektor.KartesiskTilPolaer(x1, y1)
+
+        elif valg == "Polær til kartesisk":
+            r = float(input_r.get())
+            vinkel = float(input_vinkel.get())
+            resultat = FunktionerVektor.PolaerTilKartesisk(r, vinkel)
+
+        elif valg == "Punkt til vektor":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            x2 = float(input_x2.get())
+            y2 = float(input_y2.get())
+            resultat = FunktionerVektor.PunktTilVektor2D(x1, y1, x2, y2)
+
+        elif valg == "Enhedsvektor":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            resultat = FunktionerVektor.Vektor2Denhedsvektor(x1, y1)
+
+        elif valg == "Tværvektor":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            resultat = FunktionerVektor.Tvaervektor2D(x1, y1)
+
+        elif valg == "Projektion":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            x2 = float(input_x2.get())
+            y2 = float(input_y2.get())
+            resultat = FunktionerVektor.Projektion2D(x1, y1, x2, y2)
+
+        elif valg == "Prikprodukt":
+            x1 = float(input_x1.get())
+            y1 = float(input_y1.get())
+            x2 = float(input_x2.get())
+            y2 = float(input_y2.get())
+            resultat = FunktionerVektor.Vektor2Dprikprodukt(x1, y1, x2, y2)
+
+        else:
+            resultat_label.config(text="Resultat: Vælg først et regnestykke")
+            return
+
+        if isinstance(resultat, tuple):
+            resultat = tuple(round(tal, 4) for tal in resultat)
+        else:
+            resultat = round(resultat, 4)
+
+        resultat_label.config(text=f"Resultat: {resultat}")
+
+    except ValueError:
+        resultat_label.config(text="Fejl: Skriv kun tal i felterne")
+
+    except ZeroDivisionError:
+        resultat_label.config(text="Fejl: Du kan ikke dividere med 0")
+
+    except Exception as fejl:
+        resultat_label.config(text=f"Fejl: {fejl}")
+
+
+# -------------------------
+# 3D FUNKTIONER TIL GUI
+# -------------------------
+
+def ryd_3d_inputs():
+    for widget in input_frame_3d.winfo_children():
+        widget.destroy()
+
+
+def lav_input_3d(tekst, x, y):
+    label = tk.Label(input_frame_3d, text=tekst, font=("Arial", 18), bg="white", fg="black")
+    label.place(x=x, y=y)
+
+    felt = tk.Entry(input_frame_3d, font=("Arial", 18), width=10, bg="lightgray", fg="black", insertbackground="black", relief="solid", bd=2)
+    felt.place(x=x + 80, y=y)
+
+    return felt
+
+
+def opdater_3d_inputs(event):
+    global input_x1_3d, input_y1_3d, input_z1_3d
+    global input_x2_3d, input_y2_3d, input_z2_3d
+    global input_s_3d, input_r_3d, input_theta_3d, input_phi_3d
+
+    ryd_3d_inputs()
+
+    valg = dropdown_3d.get()
+
+    input_x1_3d = None
+    input_y1_3d = None
+    input_z1_3d = None
+    input_x2_3d = None
+    input_y2_3d = None
+    input_z2_3d = None
+    input_s_3d = None
+    input_r_3d = None
+    input_theta_3d = None
+    input_phi_3d = None
+
+    if valg in ["Addition", "Subtraktion", "Vinkel mellem 2 vektorer", "Punkt til vektor", "Tværvektor", "Prikprodukt", "Krydsprodukt"]:
+        input_x1_3d = lav_input_3d("x1:", 0, 0)
+        input_y1_3d = lav_input_3d("y1:", 250, 0)
+        input_z1_3d = lav_input_3d("z1:", 500, 0)
+
+        input_x2_3d = lav_input_3d("x2:", 0, 80)
+        input_y2_3d = lav_input_3d("y2:", 250, 80)
+        input_z2_3d = lav_input_3d("z2:", 500, 80)
+
+    elif valg in ["Længde", "Enhedsvektor", "Kartesisk til sfærisk"]:
+        input_x1_3d = lav_input_3d("x1:", 0, 0)
+        input_y1_3d = lav_input_3d("y1:", 250, 0)
+        input_z1_3d = lav_input_3d("z1:", 500, 0)
+
+    elif valg == "Skalar":
+        input_x1_3d = lav_input_3d("x1:", 0, 0)
+        input_y1_3d = lav_input_3d("y1:", 250, 0)
+        input_z1_3d = lav_input_3d("z1:", 500, 0)
+        input_s_3d = lav_input_3d("s:", 0, 80)
+
+    elif valg == "Sfærisk til kartesisk":
+        input_r_3d = lav_input_3d("r:", 0, 0)
+        input_theta_3d = lav_input_3d("theta:", 250, 0)
+        input_phi_3d = lav_input_3d("phi:", 500, 0)
+
+    resultat_label_3d.config(text="Resultat:")
+
+
+def udregn_3d():
+    try:
+        valg = dropdown_3d.get()
+
+        if valg == "Addition":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            x2 = float(input_x2_3d.get())
+            y2 = float(input_y2_3d.get())
+            z2 = float(input_z2_3d.get())
+            resultat = FunktionerVektor.Vektor3Dsum(x1, y1, z1, x2, y2, z2)
+
+        elif valg == "Subtraktion":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            x2 = float(input_x2_3d.get())
+            y2 = float(input_y2_3d.get())
+            z2 = float(input_z2_3d.get())
+            resultat = FunktionerVektor.Vektor3Dminus(x1, y1, z1, x2, y2, z2)
+
+        elif valg == "Skalar":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            s = float(input_s_3d.get())
+            resultat = FunktionerVektor.Vektor3Dskalar(x1, y1, z1, s)
+
+        elif valg == "Længde":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            resultat = FunktionerVektor.Vektor3Dlængde(x1, y1, z1)
+
+        elif valg == "Vinkel mellem 2 vektorer":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            x2 = float(input_x2_3d.get())
+            y2 = float(input_y2_3d.get())
+            z2 = float(input_z2_3d.get())
+            resultat = FunktionerVektor.VinkelMellem3D(x1, y1, z1, x2, y2, z2)
+
+        elif valg == "Punkt til vektor":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            x2 = float(input_x2_3d.get())
+            y2 = float(input_y2_3d.get())
+            z2 = float(input_z2_3d.get())
+            resultat = FunktionerVektor.PunktTilVektor3D(x1, y1, z1, x2, y2, z2)
+
+        elif valg == "Enhedsvektor":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            resultat = FunktionerVektor.Vektor3Denhedsvektor(x1, y1, z1)
+
+        elif valg == "Tværvektor":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            x2 = float(input_x2_3d.get())
+            y2 = float(input_y2_3d.get())
+            z2 = float(input_z2_3d.get())
+            resultat = FunktionerVektor.Tvaervektor3D(x1, y1, z1, x2, y2, z2)
+
+        elif valg == "Prikprodukt":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            x2 = float(input_x2_3d.get())
+            y2 = float(input_y2_3d.get())
+            z2 = float(input_z2_3d.get())
+            resultat = FunktionerVektor.Vektor3Dprikprodukt(x1, y1, z1, x2, y2, z2)
+
+        elif valg == "Krydsprodukt":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            x2 = float(input_x2_3d.get())
+            y2 = float(input_y2_3d.get())
+            z2 = float(input_z2_3d.get())
+            resultat = FunktionerVektor.Krydsprodukt(x1, y1, z1, x2, y2, z2)
+
+        elif valg == "Kartesisk til sfærisk":
+            x1 = float(input_x1_3d.get())
+            y1 = float(input_y1_3d.get())
+            z1 = float(input_z1_3d.get())
+            resultat = FunktionerVektor.KartesiskTilSfaerisk3D(x1, y1, z1)
+
+        elif valg == "Sfærisk til kartesisk":
+            r = float(input_r_3d.get())
+            theta = float(input_theta_3d.get())
+            phi = float(input_phi_3d.get())
+            resultat = FunktionerVektor.SfaeriskTilKartesisk3D(r, theta, phi)
+
+        else:
+            resultat_label_3d.config(text="Resultat: Vælg først et regnestykke")
+            return
+
+        if isinstance(resultat, tuple):
+            resultat = tuple(round(tal, 4) for tal in resultat)
+        else:
+            resultat = round(resultat, 4)
+
+        resultat_label_3d.config(text=f"Resultat: {resultat}")
+
+    except ValueError:
+        resultat_label_3d.config(text="Fejl: Skriv kun tal i felterne")
+
+    except ZeroDivisionError:
+        resultat_label_3d.config(text="Fejl: Du kan ikke dividere med 0")
+
+    except Exception as fejl:
+        resultat_label_3d.config(text=f"Fejl: {fejl}")
+
+
+# -------------------------
+# SIDER
+# -------------------------
+
+def vis_2d_side():
+    global dropdown_2d, input_frame_2d, resultat_label
+
+    ryd_vindue()
+    Vinduet.configure(bg="white")
+    vis_return_knap()
+
+    overskrift = tk.Label(Vinduet, text="2D vektorer", font=("Arial", 30), bg="white", fg="black")
+    overskrift.place(x=300, y=80)
+
+    dropdown_2d = ttk.Combobox(Vinduet, font=("Arial", 16), width=28, state="readonly")
+    dropdown_2d["values"] = (
+        "Addition",
+        "Subtraktion",
+        "Skalar",
+        "Længde",
+        "Vinkel",
+        "Vinkel mellem 2 vektorer",
+        "Kartesisk til polær",
+        "Polær til kartesisk",
+        "Punkt til vektor",
+        "Enhedsvektor",
+        "Tværvektor",
+        "Projektion",
+        "Prikprodukt"
+    )
+    dropdown_2d.set("Vælg regnestykke")
+    dropdown_2d.place(x=180, y=160)
+    dropdown_2d.bind("<<ComboboxSelected>>", opdater_2d_inputs)
+
+    input_frame_2d = tk.Frame(Vinduet, bg="white", width=650, height=250)
+    input_frame_2d.place(x=150, y=250)
+
+    udregn_knap = tk.Button(Vinduet, text="Udregn", font=("Arial", 18), width=12, command=udregn_2d)
+    udregn_knap.place(x=280, y=520)
+
+    resultat_label = tk.Label(Vinduet, text="Resultat:", font=("Arial", 20), bg="white", fg="black")
+    resultat_label.place(x=150, y=600)
+
+
+def vis_3d_side():
+    global dropdown_3d, input_frame_3d, resultat_label_3d
+
+    ryd_vindue()
+    Vinduet.configure(bg="white")
+    vis_return_knap()
+
+    overskrift = tk.Label(Vinduet, text="3D vektorer", font=("Arial", 30), bg="white", fg="black")
+    overskrift.place(x=300, y=80)
+
+    dropdown_3d = ttk.Combobox(Vinduet, font=("Arial", 16), width=28, state="readonly")
+    dropdown_3d["values"] = (
+        "Addition",
+        "Subtraktion",
+        "Skalar",
+        "Længde",
+        "Vinkel mellem 2 vektorer",
+        "Kartesisk til sfærisk",
+        "Sfærisk til kartesisk",
+        "Punkt til vektor",
+        "Enhedsvektor",
+        "Tværvektor",
+        "Prikprodukt",
+        "Krydsprodukt"
+    )
+    dropdown_3d.set("Vælg regnestykke")
+    dropdown_3d.place(x=180, y=160)
+    dropdown_3d.bind("<<ComboboxSelected>>", opdater_3d_inputs)
+
+    input_frame_3d = tk.Frame(Vinduet, bg="white", width=850, height=250)
+    input_frame_3d.place(x=150, y=250)
+
+    udregn_knap = tk.Button(Vinduet, text="Udregn", font=("Arial", 18), width=12, command=udregn_3d)
+    udregn_knap.place(x=280, y=520)
+
+    resultat_label_3d = tk.Label(Vinduet, text="Resultat:", font=("Arial", 20), bg="white", fg="black")
+    resultat_label_3d.place(x=150, y=600)
+
+
+def vis_return_knap():
+    return_knap = tk.Button(Vinduet, text="Return", font=("Arial", 14), width=10, command=vis_hovedmenu)
+    return_knap.place(x=1350, y=30)
+
+
+def vis_hovedmenu():
+    ryd_vindue()
+    Vinduet.configure(bg="white")
+
+    knap_2d = tk.Button(Vinduet, text="2D vektorer", font=("Arial", 24), width=15, height=3, command=vis_2d_side)
+    knap_2d.place(x=450, y=400)
+
+    knap_3d = tk.Button(Vinduet, text="3D vektorer", font=("Arial", 24), width=15, height=3, command=vis_3d_side)
+    knap_3d.place(x=800, y=400)
+
+
+vis_hovedmenu()
+
+Vinduet.mainloop()
